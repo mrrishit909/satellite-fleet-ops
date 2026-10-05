@@ -1,0 +1,791 @@
+{
+ "service": "satellite-fleet-ops",
+ "run": "demo-1",
+ "tokens": {
+  "director": "fleet-director-demo",
+  "engineer": "fleet-engineer-demo",
+  "operator": "fleet-operator-demo",
+  "viewer": "fleet-viewer-demo"
+ },
+ "steps": [
+  {
+   "title": "Load a 12-spacecraft fleet",
+   "say": "An invented constellation: twelve small satellites in low Earth orbit, four ground stations from Svalbard to Punta Arenas, every pass for the next 48 hours, 18 hours of minute-by-minute housekeeping telemetry, and a queue of downlink requests that asks for more data than the passes can carry.",
+   "calls": [
+    {
+     "key": "load",
+     "as": "director",
+     "method": "POST",
+     "path": "/v1/fleet:load",
+     "body": {
+      "seed": 17
+     }
+    },
+    {
+     "key": "state",
+     "as": "viewer",
+     "method": "GET",
+     "path": "/v1/spacecraft/d4914160-ad52-5e2d-a156-bb0b0183c92e/state"
+    }
+   ]
+  },
+  {
+   "title": "Ten minutes of packets, and a battery that is warming",
+   "say": "The latest packets for RBO-07 arrive, one of them twice. Detection compares every metric with its own normal by orbit phase, learned from the first twelve hours. The battery temperature has been off its normal since 16:00. The fixed red limit would not have noticed for hours; an Isolation Forest on the same data sees nothing.",
+   "calls": [
+    {
+     "key": "pk",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/telemetry/packets",
+     "body": {
+      "spacecraft_id": "d4914160-ad52-5e2d-a156-bb0b0183c92e",
+      "packets": [
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.581,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.5771,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.9219,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": -0.0312,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3511,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -19.1133,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 28.167,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2103.9953,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.6013,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 21.0304,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.9183,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": -0.0685,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.2982,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -19.1078,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 28.2267,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:51:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2092.296,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.619,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.4333,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.9148,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": -0.0352,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3195,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -21.8875,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 28.0053,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:52:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2107.5046,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.5617,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.8235,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.9112,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": -0.0006,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3013,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -18.4065,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 27.8615,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:53:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2104.1389,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.6071,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.7125,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.9077,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": -0.0083,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3341,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -19.4988,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 28.462,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:54:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2100.2752,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.5468,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.832,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.9041,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": 0.0461,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3613,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -20.5011,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 27.9228,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:55:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2116.0795,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.55,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.6574,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.9006,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": 0.0151,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3198,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -18.9867,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 28.1239,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:56:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2080.5494,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.5441,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.4935,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.897,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": 0.0229,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3844,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -18.0076,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 28.0463,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:57:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2114.1505,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.5548,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.7181,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.8935,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": 0.1218,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.302,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -20.1424,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 27.8252,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:58:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2085.863,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.5297,
+        "unit": "V"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "eps",
+        "metric": "battery_temp_c",
+        "value": 20.6691,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "eps",
+        "metric": "soc",
+        "value": 0.8899,
+        "unit": "ratio"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "eps",
+        "metric": "solar_current_a",
+        "value": -0.0346,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "eps",
+        "metric": "bus_current_a",
+        "value": 1.3483,
+        "unit": "A"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "thermal",
+        "metric": "panel_temp_c",
+        "value": -20.3625,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "obc",
+        "metric": "obc_temp_c",
+        "value": 27.8038,
+        "unit": "degC"
+       },
+       {
+        "ts": "2026-10-05T17:59:00Z",
+        "subsystem": "adcs",
+        "metric": "wheel_speed_rpm",
+        "value": 2116.1598,
+        "unit": "rpm"
+       },
+       {
+        "ts": "2026-10-05T17:50:00Z",
+        "subsystem": "eps",
+        "metric": "battery_voltage_v",
+        "value": 16.581,
+        "unit": "V"
+       }
+      ]
+     }
+    },
+    {
+     "key": "state2",
+     "as": "viewer",
+     "method": "GET",
+     "path": "/v1/spacecraft/d4914160-ad52-5e2d-a156-bb0b0183c92e/state"
+    }
+   ]
+  },
+  {
+   "title": "Too many requests for the passes",
+   "say": "Twelve spacecraft want to downlink more than the next 24 hours of passes can carry, with priorities and deadlines, and the sun-synchronous ones all reach Svalbard at the same time. The planner chooses passes so that the most important data lands first; the obvious first-come schedule is shown beside it.",
+   "calls": [
+    {
+     "key": "plan",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/planning/contacts",
+     "body": {
+      "horizon_h": 24
+     }
+    }
+   ]
+  },
+  {
+   "title": "A conjunction alert",
+   "say": "A screening message: debris will pass 180 metres from RBO-03 in 20 hours, with 120 metres of uncertainty. The chance of collision is scored and it is above the action threshold.",
+   "calls": [
+    {
+     "key": "cdm",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/conjunctions",
+     "body": {
+      "spacecraft_id": "3a6b05a4-6b0f-5966-8a05-d1da55451cce",
+      "object_id": "DEBRIS 2019-006AJ",
+      "tca": "2026-10-06T14:00:00Z",
+      "miss_distance_m": 180.0,
+      "sigma_m": 120.0,
+      "radius_m": 5
+     }
+    },
+    {
+     "key": "list",
+     "as": "viewer",
+     "method": "GET",
+     "path": "/v1/conjunctions?risk_min=0.00001"
+    }
+   ]
+  },
+  {
+   "title": "Would a manoeuvre be safe to fly?",
+   "say": "A 5 cm/s burn five hours before closest approach moves the spacecraft kilometres along its orbit, and the probability falls to nothing. But the battery: a 72-minute imaging campaign sits just before the burn, and the forecast says the state of charge at ignition would be below the 80% rule. With the campaign moved past the approach, it is not.",
+   "calls": [
+    {
+     "key": "sim",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/scenarios/orbit-maneuver",
+     "body": {
+      "conjunction_id": "{{cdm.conjunction_id}}",
+      "delta_v_mps": 0.05,
+      "burn_at": "2026-10-06T09:00:00Z",
+      "delay_payload_min": 420
+     }
+    }
+   ]
+  },
+  {
+   "title": "Two people before anything is sent",
+   "say": "The manoeuvre is refused while the payload plan stands: the margin rule is checked at the queue, not by a person remembering. The payload delay is queued, approved by an engineer, then released by the director; the director trying to approve twice is refused, and so is the operator. Then the manoeuvre goes the same way.",
+   "calls": [
+    {
+     "key": "early",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/commands",
+     "expect_error": true,
+     "body": {
+      "spacecraft_id": "3a6b05a4-6b0f-5966-8a05-d1da55451cce",
+      "command_type": "maneuver",
+      "args": {
+       "delta_v_mps": 0.05,
+       "conjunction_id": "{{cdm.conjunction_id}}"
+      },
+      "scheduled_for": "2026-10-06T09:00:00Z"
+     }
+    },
+    {
+     "key": "c1",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/commands",
+     "body": {
+      "spacecraft_id": "3a6b05a4-6b0f-5966-8a05-d1da55451cce",
+      "command_type": "payload_delay",
+      "args": {
+       "start_min": 1890,
+       "end_min": 1962,
+       "delay_min": 420
+      },
+      "scheduled_for": "2026-10-06T06:30:00Z"
+     }
+    },
+    {
+     "key": "a1",
+     "as": "engineer",
+     "method": "POST",
+     "path": "/v1/commands/{{c1.command_id}}/approve"
+    },
+    {
+     "key": "twice",
+     "as": "engineer",
+     "method": "POST",
+     "path": "/v1/commands/{{c1.command_id}}/approve",
+     "expect_error": true
+    },
+    {
+     "key": "nope",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/commands/{{c1.command_id}}/approve",
+     "expect_error": true
+    },
+    {
+     "key": "a2",
+     "as": "director",
+     "method": "POST",
+     "path": "/v1/commands/{{c1.command_id}}/approve"
+    },
+    {
+     "key": "c2",
+     "as": "operator",
+     "method": "POST",
+     "path": "/v1/commands",
+     "body": {
+      "spacecraft_id": "3a6b05a4-6b0f-5966-8a05-d1da55451cce",
+      "command_type": "maneuver",
+      "args": {
+       "delta_v_mps": 0.05,
+       "conjunction_id": "{{cdm.conjunction_id}}"
+      },
+      "scheduled_for": "2026-10-06T09:00:00Z"
+     }
+    },
+    {
+     "key": "b1",
+     "as": "engineer",
+     "method": "POST",
+     "path": "/v1/commands/{{c2.command_id}}/approve"
+    },
+    {
+     "key": "b2",
+     "as": "director",
+     "method": "POST",
+     "path": "/v1/commands/{{c2.command_id}}/approve"
+    },
+    {
+     "key": "queue",
+     "as": "viewer",
+     "method": "GET",
+     "path": "/v1/commands"
+    }
+   ]
+  },
+  {
+   "title": "The audit trail",
+   "say": "Who loaded the fleet, which anomaly was detected, who planned, who registered the alert, who queued and who approved each command, with its checksum: recorded in a log that cannot be edited.",
+   "calls": [
+    {
+     "key": "audit",
+     "as": "director",
+     "method": "GET",
+     "path": "/v1/audit?limit=14"
+    }
+   ]
+  }
+ ]
+}

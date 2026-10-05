@@ -1,0 +1,1107 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "satellite-fleet-ops",
+  "version": "1.0.0"
+ },
+ "paths": {
+  "/v1/jobs/{job_id}": {
+   "get": {
+    "tags": [
+     "platform"
+    ],
+    "summary": "Status, attempts and result of a long-running job",
+    "operationId": "job_status_v1_jobs__job_id__get",
+    "parameters": [
+     {
+      "name": "job_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Job Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/jobs": {
+   "get": {
+    "tags": [
+     "platform"
+    ],
+    "summary": "Jobs by status; status=dead is the dead-letter view",
+    "operationId": "job_list_v1_jobs_get",
+    "parameters": [
+     {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "dead",
+       "title": "Status"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/audit": {
+   "get": {
+    "tags": [
+     "platform"
+    ],
+    "summary": "Latest audit events and whether the hash chain verifies",
+    "operationId": "audit_log_v1_audit_get",
+    "parameters": [
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "default": 50,
+       "title": "Limit"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/fleet:load": {
+   "post": {
+    "tags": [
+     "fleet"
+    ],
+    "summary": "(+) Load a synthetic 12-spacecraft fleet: orbits, four stations, 48 h of passes, 18 h of housekeeping telemetry, the downlink request queue",
+    "operationId": "load_fleet_v1_fleet_load_post",
+    "parameters": [
+     {
+      "name": "Idempotency-Key",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Idempotency-Key"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LoadIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "202": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/spacecraft/{spacecraft_id}/state": {
+   "get": {
+    "tags": [
+     "spacecraft"
+    ],
+    "summary": "Latest housekeeping values, battery state, open anomalies, the next passes and the downlink request",
+    "operationId": "state_v1_spacecraft__spacecraft_id__state_get",
+    "parameters": [
+     {
+      "name": "spacecraft_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Spacecraft Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/telemetry/packets": {
+   "post": {
+    "tags": [
+     "telemetry"
+    ],
+    "summary": "Housekeeping packets for one spacecraft (a resend is harmless), then anomaly detection over its whole record",
+    "operationId": "packets_v1_telemetry_packets_post",
+    "parameters": [
+     {
+      "name": "Idempotency-Key",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Idempotency-Key"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PacketsIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/planning/contacts": {
+   "post": {
+    "tags": [
+     "planning"
+    ],
+    "summary": "Schedule the passes ahead so that priority-weighted data lands before each deadline, one contact per antenna and per spacecraft at a time; the obvious first-come schedule beside it",
+    "operationId": "plan_contacts_v1_planning_contacts_post",
+    "parameters": [
+     {
+      "name": "Idempotency-Key",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Idempotency-Key"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PlanIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/conjunctions": {
+   "post": {
+    "tags": [
+     "conjunctions"
+    ],
+    "summary": "(+) Register a screening message and score it",
+    "operationId": "conjunction_v1_conjunctions_post",
+    "parameters": [
+     {
+      "name": "Idempotency-Key",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Idempotency-Key"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ConjunctionIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "get": {
+    "tags": [
+     "conjunctions"
+    ],
+    "summary": "Close approaches at or above a collision probability",
+    "operationId": "conjunctions_v1_conjunctions_get",
+    "parameters": [
+     {
+      "name": "risk_min",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "number",
+       "maximum": 1,
+       "minimum": 0,
+       "default": 1e-05,
+       "title": "Risk Min"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/scenarios/orbit-maneuver": {
+   "post": {
+    "tags": [
+     "scenarios"
+    ],
+    "summary": "What a manoeuvre would do: the miss distance and probability after it, and whether the battery has the margin to burn under the current payload plan or a delayed one",
+    "operationId": "maneuver_scenario_v1_scenarios_orbit_maneuver_post",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ManeuverIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/commands": {
+   "post": {
+    "tags": [
+     "commands"
+    ],
+    "summary": "Queue a command. It needs two different approvers before release; a manoeuvre is refused unless the battery margin holds under the plan as it stands",
+    "operationId": "command_v1_commands_post",
+    "parameters": [
+     {
+      "name": "Idempotency-Key",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Idempotency-Key"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CommandIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "get": {
+    "tags": [
+     "commands"
+    ],
+    "summary": "(+) The command queue",
+    "operationId": "commands_v1_commands_get",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/v1/commands/{command_id}/approve": {
+   "post": {
+    "tags": [
+     "commands"
+    ],
+    "summary": "One of two approvals. The second, by a different person, releases the command onto the next pass before its time",
+    "operationId": "approve_v1_commands__command_id__approve_post",
+    "parameters": [
+     {
+      "name": "command_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Command Id"
+      }
+     },
+     {
+      "name": "Idempotency-Key",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Idempotency-Key"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "components": {
+  "schemas": {
+   "CommandIn": {
+    "properties": {
+     "spacecraft_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Spacecraft Id"
+     },
+     "command_type": {
+      "type": "string",
+      "enum": [
+       "payload_delay",
+       "maneuver"
+      ],
+      "title": "Command Type"
+     },
+     "args": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Args",
+      "description": "payload_delay: {start_min, end_min, delay_min}; maneuver: {delta_v_mps, conjunction_id}"
+     },
+     "scheduled_for": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Scheduled For"
+     }
+    },
+    "type": "object",
+    "required": [
+     "spacecraft_id",
+     "command_type",
+     "args",
+     "scheduled_for"
+    ],
+    "title": "CommandIn"
+   },
+   "ConjunctionIn": {
+    "properties": {
+     "spacecraft_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Spacecraft Id"
+     },
+     "object_id": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Object Id"
+     },
+     "tca": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Tca"
+     },
+     "miss_distance_m": {
+      "type": "number",
+      "maximum": 50000.0,
+      "exclusiveMinimum": 0.0,
+      "title": "Miss Distance M"
+     },
+     "sigma_m": {
+      "type": "number",
+      "maximum": 5000.0,
+      "exclusiveMinimum": 0.0,
+      "title": "Sigma M",
+      "description": "Combined position uncertainty at closest approach, one standard deviation"
+     },
+     "radius_m": {
+      "type": "number",
+      "maximum": 50.0,
+      "exclusiveMinimum": 0.0,
+      "title": "Radius M",
+      "description": "Combined hard-body radius",
+      "default": 5.0
+     }
+    },
+    "type": "object",
+    "required": [
+     "spacecraft_id",
+     "object_id",
+     "tca",
+     "miss_distance_m",
+     "sigma_m"
+    ],
+    "title": "ConjunctionIn"
+   },
+   "HTTPValidationError": {
+    "properties": {
+     "detail": {
+      "items": {
+       "$ref": "#/components/schemas/ValidationError"
+      },
+      "type": "array",
+      "title": "Detail"
+     }
+    },
+    "type": "object",
+    "title": "HTTPValidationError"
+   },
+   "LoadIn": {
+    "properties": {
+     "seed": {
+      "type": "integer",
+      "maximum": 1000000.0,
+      "minimum": 0.0,
+      "title": "Seed",
+      "default": 17
+     }
+    },
+    "type": "object",
+    "title": "LoadIn"
+   },
+   "ManeuverIn": {
+    "properties": {
+     "conjunction_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Conjunction Id"
+     },
+     "delta_v_mps": {
+      "type": "number",
+      "maximum": 2.0,
+      "exclusiveMinimum": 0.0,
+      "title": "Delta V Mps",
+      "default": 0.05
+     },
+     "burn_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Burn At"
+     },
+     "delay_payload_min": {
+      "type": "integer",
+      "maximum": 1440.0,
+      "minimum": 0.0,
+      "title": "Delay Payload Min",
+      "description": "Move the payload campaign that overlaps the burn window this many minutes later",
+      "default": 0
+     }
+    },
+    "type": "object",
+    "required": [
+     "conjunction_id",
+     "burn_at"
+    ],
+    "title": "ManeuverIn"
+   },
+   "Packet": {
+    "properties": {
+     "ts": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Ts"
+     },
+     "subsystem": {
+      "type": "string",
+      "maxLength": 16,
+      "title": "Subsystem"
+     },
+     "metric": {
+      "type": "string",
+      "enum": [
+       "battery_voltage_v",
+       "battery_temp_c",
+       "soc",
+       "solar_current_a",
+       "bus_current_a",
+       "panel_temp_c",
+       "obc_temp_c",
+       "wheel_speed_rpm"
+      ],
+      "title": "Metric"
+     },
+     "value": {
+      "type": "number",
+      "title": "Value"
+     },
+     "unit": {
+      "type": "string",
+      "maxLength": 8,
+      "title": "Unit"
+     }
+    },
+    "type": "object",
+    "required": [
+     "ts",
+     "subsystem",
+     "metric",
+     "value",
+     "unit"
+    ],
+    "title": "Packet"
+   },
+   "PacketsIn": {
+    "properties": {
+     "spacecraft_id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Spacecraft Id"
+     },
+     "packets": {
+      "items": {
+       "$ref": "#/components/schemas/Packet"
+      },
+      "type": "array",
+      "maxItems": 5000,
+      "minItems": 1,
+      "title": "Packets"
+     }
+    },
+    "type": "object",
+    "required": [
+     "spacecraft_id",
+     "packets"
+    ],
+    "title": "PacketsIn"
+   },
+   "PlanIn": {
+    "properties": {
+     "horizon_h": {
+      "type": "integer",
+      "maximum": 30.0,
+      "minimum": 2.0,
+      "title": "Horizon H",
+      "default": 24
+     }
+    },
+    "type": "object",
+    "title": "PlanIn"
+   },
+   "ValidationError": {
+    "properties": {
+     "loc": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "integer"
+        }
+       ]
+      },
+      "type": "array",
+      "title": "Location"
+     },
+     "msg": {
+      "type": "string",
+      "title": "Message"
+     },
+     "type": {
+      "type": "string",
+      "title": "Error Type"
+     },
+     "input": {
+      "title": "Input"
+     },
+     "ctx": {
+      "type": "object",
+      "title": "Context"
+     }
+    },
+    "type": "object",
+    "required": [
+     "loc",
+     "msg",
+     "type"
+    ],
+    "title": "ValidationError"
+   }
+  }
+ }
+}
